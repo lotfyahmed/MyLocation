@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MyLocation" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fnx-Np-sj1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Org-Eu-dlS">
+                                <rect key="frame" x="0.0" y="510" width="600" height="59"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="59" id="BUb-yj-T3l"/>
+                                </constraints>
+                                <state key="normal" title="My Location"/>
+                                <connections>
+                                    <action selector="getMyLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dDK-bS-QXF"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTF-tF-CSM">
+                                <rect key="frame" x="0.0" y="579" width="600" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fnx-Np-sj1" secondAttribute="trailing" id="3mi-xI-IJS"/>
+                            <constraint firstItem="BTF-tF-CSM" firstAttribute="top" secondItem="Org-Eu-dlS" secondAttribute="bottom" constant="10" id="KRY-zM-q6w"/>
+                            <constraint firstItem="fnx-Np-sj1" firstAttribute="trailing" secondItem="Org-Eu-dlS" secondAttribute="trailing" id="ReD-cC-FXL"/>
+                            <constraint firstItem="Org-Eu-dlS" firstAttribute="leading" secondItem="BTF-tF-CSM" secondAttribute="leading" id="RwT-Uh-KTc"/>
+                            <constraint firstItem="fnx-Np-sj1" firstAttribute="leading" secondItem="Org-Eu-dlS" secondAttribute="leading" id="SMA-90-beC"/>
+                            <constraint firstItem="fnx-Np-sj1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="VZH-db-fmK"/>
+                            <constraint firstItem="fnx-Np-sj1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="grr-6U-IQ8"/>
+                            <constraint firstItem="BTF-tF-CSM" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="pi1-dB-BDF"/>
+                            <constraint firstItem="Org-Eu-dlS" firstAttribute="trailing" secondItem="BTF-tF-CSM" secondAttribute="trailing" id="q6G-LJ-w21"/>
+                            <constraint firstItem="Org-Eu-dlS" firstAttribute="top" secondItem="fnx-Np-sj1" secondAttribute="bottom" constant="10" id="v5a-LQ-OGU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="lable" destination="BTF-tF-CSM" id="D5l-CY-SQa"/>
+                        <outlet property="map" destination="fnx-Np-sj1" id="K10-EN-pnD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="559" y="374"/>
+        </scene>
+    </scenes>
+</document>
