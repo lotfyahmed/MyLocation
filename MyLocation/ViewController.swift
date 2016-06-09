@@ -16,7 +16,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var lable: UILabel!
-    var myLocations: [CLLocation] = []
+    var myLocation:CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +40,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         if let coor = map.userLocation.location?.coordinate{
             map.setCenterCoordinate(coor, animated: true)
         }
+        addLongPressGesture()
     }
-    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -52,23 +52,59 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         map.showsUserLocation = false
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        let message = "\(locValue.latitude) , \(locValue.longitude)"
-        print(message)
+    func addLongPressGesture(){
+        let longPressRecogniser:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target:self , action:#selector(ViewController.handleLongPress(_:)))
+        longPressRecogniser.minimumPressDuration = 1.0 //user needs to press for 2 seconds
+        self.map.addGestureRecognizer(longPressRecogniser)
+    }
+    
+    func handleLongPress(gestureRecognizer:UIGestureRecognizer){
+        if gestureRecognizer.state != .Began{
+            return
+        }
         
-        self.lable.text = message //"\(locations[0])"
-        myLocations.append(locations[0] as CLLocation)
+        let touchPoint:CGPoint = gestureRecognizer.locationInView(self.map)
+        let touchMapCoordinate:CLLocationCoordinate2D =
+            self.map.convertPoint(touchPoint, toCoordinateFromView: self.map)
+        
+        let annot:MKPointAnnotation = MKPointAnnotation()
+        annot.coordinate = touchMapCoordinate
+        
+        self.resetTracking()
+        self.map.addAnnotation(annot)
+        self.centerMap(touchMapCoordinate)
+    }
+    
+    func resetTracking(){
+        if (map.showsUserLocation){
+            map.showsUserLocation = false
+            self.map.removeAnnotations(map.annotations)
+            self.locationManager.stopUpdatingLocation()
+        }
+    }
+    
+    func centerMap(center:CLLocationCoordinate2D){
+        self.saveCurrentLocation(center)
         
         let spanX = 0.007
         let spanY = 0.007
         
-        let center:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: locValue.latitude, longitude: locValue.longitude)
-        
         let newRegion = MKCoordinateRegion(center:center , span: MKCoordinateSpanMake(spanX, spanY))
         map.setRegion(newRegion, animated: true)
+    }
+    
+    func saveCurrentLocation(center:CLLocationCoordinate2D){
+        let message = "\(center.latitude) , \(center.longitude)"
+        print(message)
+        self.lable.text = message
+        myLocation = center
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         
-        }
+        centerMap(locValue)
+    }
     
     static var enable:Bool = true
     @IBAction func getMyLocation(sender: UIButton) {
@@ -85,7 +121,21 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
     }
     
-
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
+        let identifier = "pin"
+        var view : MKPinAnnotationView
+        if let dequeueView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView{
+            dequeueView.annotation = annotation
+            view = dequeueView
+        }else{
+            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.canShowCallout = true
+            view.calloutOffset = CGPoint(x: -5, y: 5)
+            view.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+        }
+        view.pinColor =  .Red
+        return view
+    }
     
 }
 
